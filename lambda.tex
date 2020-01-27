@@ -1,0 +1,83 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[a4paper, total={6.5in, 8in}]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+\title{Lambda}
+\author{Giannis Tyrovolas}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{prop}[theorem]{Proposition}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\begin{document}
+
+\maketitle
+
+
+Why study Lambda Calculus? Well it is the most mathematical and symbolic way to talk about computation. Last year I loved it as a concept. Now we'll see how it actually goes.
+
+\section{Introduction}
+
+\begin{definition}[Lambdas]
+A function $f(x) = y$ can be represented by $\lambda x.y$. For example the identity function is described by $\lambda x.x$. Note, we would usually define a function with a domain and a co-domain. This is an ambiguity which will be explored later.
+\end{definition}
+
+To apply a function we simply adjoin it to a variable. So for instance, 
+\[
+(\lambda x. x^2 + x) \  3 \rightarrow 3^2 + 3 \rightarrow 12	
+\]
+
+For functions $f(x,y) = z$ we can use currying. Take $f(x,y) = 2x + y$. Then:
+\begin{align*}
+    &f = \lambda x. \lambda y. 2x + y \\
+	&f \ 3 = \lambda y. 6 + y \\
+	&f \ 3 \ 2 = 8
+\end{align*}
+	
+But what is a function? And when can two functions be equal? Well the extenstional definition of a function is the following.
+
+\begin{definition}[Extensional equality]
+Two functions $f, g$ are equal if and only if $\forall x f(x) = g(x)$. Note that again we have not defined the domain of $f$ and $g$. 
+\end{definition}
+
+So although $\lambda x. x + x$ and $\lambda x. 2x$ are extenstionally equal, one might say that intensionally they are not as the instructions given are different.
+
+Now the pure untyped lambda calculus has no types, does not distinguish between data and so on. It can be described by the context-free grammar: 
+
+\[
+	s ::= x \ | \ \lambda x.s \ | \ s \ s
+\]
+
+Suprisingly this can encode any possible function. Weird.
+
+The way we ``compute'' in $\lambda$-calculus is through reductions. But reduction as a term can be misleading. Take for instance:
+
+\[
+	\Omega := (\lambda x. xx)(\lambda y. yy)
+\]
+Then:
+
+\[
+	\Omega \rightarrow (xx)[(\lambda y. yy)/x] \rightarrow (\lambda y . yy)(\lambda y . yy) = \Omega
+\]
+
+Which looks like a non-terminating loop. Also we will prove later that every lambda term has a fixed point. I.e.
+
+\[
+	\forall \lambda\text{-terms } g \  \exists x_0 \ s.t. \  g \ x_0 = x_0 
+\]	
+
+\end{document}
